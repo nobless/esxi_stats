@@ -314,11 +314,10 @@ def get_vm_info(virtual_machine):
 
         if vm_sum.guest.ipAddress:
             vm_ip = vm_sum.guest.ipAddress
+            vm_mac = "n/a"
         else:
             vm_ip = "n/a"
             _LOGGER.debug("Unable to return VM IP address for %s", vm_name)
-
-        vm_mac = "n/a"
 
         if vm_sum.guest.guestFullName:
             vm_guest_os = vm_sum.guest.guestFullName
