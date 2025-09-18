@@ -209,7 +209,7 @@ def get_host_info(host):
         "version": host_version,
         "build": host_build,
         "uptime_hours": host_uptime,
-        "MAC": host_mac,
+        "MAC": host_macs,
         "cputotal_ghz": host_cpu_total,
         "cpuusage_ghz": host_cpu_usage,
         "memtotal_gb": host_mem_total,
