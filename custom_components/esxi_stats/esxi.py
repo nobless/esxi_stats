@@ -158,6 +158,16 @@ def get_host_info(host):
         host_cpu_usage = round(host_summary.quickStats.overallCpuUsage / 1000, 1)
         host_mem_usage = round(host_summary.quickStats.overallMemoryUsage / 1024, 2)
 
+        # Get MAC addresses of only "up" interfaces
+        host_macs = []
+        try:
+            for nic in host.config.network.vnic:
+                if nic.connectable.connected and nic.connectable.linkUp:
+                    host_macs.append(nic.spec.mac)
+        except Exception as e:
+            _LOGGER.debug("Could not get active MAC addresses for %s: %s", host_name, e)
+
+
         # Get current power policy
         try:
             host_power_policy = host.config.powerSystemInfo.currentPolicy.shortName
@@ -181,6 +191,7 @@ def get_host_info(host):
         host_version = "n/a"
         host_build = "n/a"
         host_uptime = "n/a"
+        host_macs = []
         host_cpu_total = "n/a"
         host_cpu_usage = "n/a"
         host_mem_total = "n/a"
@@ -198,6 +209,7 @@ def get_host_info(host):
         "version": host_version,
         "build": host_build,
         "uptime_hours": host_uptime,
+        "MAC": host_mac,
         "cputotal_ghz": host_cpu_total,
         "cpuusage_ghz": host_cpu_usage,
         "memtotal_gb": host_mem_total,
@@ -318,6 +330,7 @@ def get_vm_info(virtual_machine):
         vm_mem_usage = "n/a"
         vm_mem_active = "n/a"
         vm_ip = "n/a"
+        vm_mac = "n/a"
         vm_uptime = "n/a"
         vm_guest_os = vm_sum.config.guestFullName
 
@@ -336,6 +349,7 @@ def get_vm_info(virtual_machine):
         "tools_status": vm_tools_status,
         "guest_os": vm_guest_os,
         "guest_ip": vm_ip,
+        "guest_mac": vm_mac,
         "snapshots": vm_snapshots,
         "uuid": vm_sum.config.uuid,
         "host_name": vm_run.host.name,
