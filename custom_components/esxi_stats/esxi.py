@@ -160,12 +160,18 @@ def get_host_info(host):
 
         # Get MAC addresses of only "up" interfaces
         host_macs = []
+        #try:
+        #    for nic in host.config.network.vnic:
+        #        if nic.connectable.connected and nic.connectable.linkUp:
+        #            host_macs.append(nic.spec.mac)
+        #except Exception as e:
+        #    _LOGGER.debug("Could not get active MAC addresses for %s: %s", host_name, e)
+
         try:
-            for nic in host.config.network.vnic:
-                if nic.connectable.connected and nic.connectable.linkUp:
-                    host_macs.append(nic.spec.mac)
+            for vnic in host.config.network.vnic:
+                host_macs.append(vnic.spec.mac)
         except Exception as e:
-            _LOGGER.debug("Could not get active MAC addresses for %s: %s", host_name, e)
+            _LOGGER.debug("Could not get host VMkernel MAC addresses for %s: %s", host_name, e)
 
 
         # Get current power policy
