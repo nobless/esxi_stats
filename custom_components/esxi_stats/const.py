@@ -85,6 +85,7 @@ MAP_TO_MEASUREMENT = {
     "memtotal_gb": "GB",
     "version": None,  # Version text
     "build": None,  # Build text
+    "host_macs": None,  # MAC address
     "maintenance_mode": None,  # Boolean
     "power_policy": None,  # Policy text
     "available_power_policies": None,  # List text
