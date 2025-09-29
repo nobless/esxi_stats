@@ -104,6 +104,7 @@ class ESXiPowerPolicySelect(SelectEntity):
             "model": "ESXi Host",
             "sw_version": host_data.get("version", "Unknown"),
             "connections": {("mac", mac.lower()) for mac in host_macs},
+            "mac": {("mac", mac.lower()) for mac in host_macs},
         }
 
     @property
