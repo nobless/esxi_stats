@@ -95,12 +95,15 @@ class ESXiPowerPolicySelect(SelectEntity):
         """Return device information."""
         host_data = self._host_data or {}
         host_original_name = host_data.get("original_name", self._host_name)
+        host_macs = host_data.get("host_macs", [])
+        
         return {
             "identifiers": {(DOMAIN, f"host_{self._host_name}")},
             "name": f"ESXi Host: {host_original_name}",
             "manufacturer": "VMware ESXi",
             "model": "ESXi Host",
             "sw_version": host_data.get("version", "Unknown"),
+            "connections": {("mac", mac.lower()) for mac in host_macs},
         }
 
     @property
