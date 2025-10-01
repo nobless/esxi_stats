@@ -114,6 +114,12 @@ class ESXiPowerPolicySelect(SelectEntity):
         }
 
     @property
+    def extra_state_attributes(self):
+        host_data = self._host_data or {}
+        host_macs = host_data.get("host_macs", [])
+        return {"mac_addresses": host_macs} if host_macs else {}
+
+    @property
     def current_option(self) -> str | None:
         """Return the current power policy."""
         if self._host_data:
