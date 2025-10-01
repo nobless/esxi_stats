@@ -98,6 +98,9 @@ class ESXiPowerPolicySelect(SelectEntity):
         host_original_name = host_data.get("original_name", self._host_name)
         host_macs = host_data.get("host_macs", [])
         
+        # Use only the first MAC for HA device connection
+        first_mac = host_macs[0].lower() if host_macs else None
+        
         return {
             "identifiers": {(DOMAIN, f"host_{self._host_name}")},
             "name": f"ESXi Host: {host_original_name}",
@@ -106,7 +109,8 @@ class ESXiPowerPolicySelect(SelectEntity):
             "sw_version": host_data.get("version", "Unknown"),
             #"connections": {("mac", mac.lower()) for mac in host_macs},
             #"mac": {("mac", mac.lower()) for mac in host_macs},
-            "connections": {(dr.CONNECTION_NETWORK_MAC, mac.lower()) for mac in host_macs},
+            #"connections": {(dr.CONNECTION_NETWORK_MAC, mac.lower()) for mac in host_macs},
+            "connections": {(dr.CONNECTION_NETWORK_MAC, first_mac)} if first_mac else set(),
         }
 
     @property
