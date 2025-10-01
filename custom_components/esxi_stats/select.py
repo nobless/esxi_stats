@@ -6,6 +6,7 @@ from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers import device_registry as dr
 
 from .const import DOMAIN, DOMAIN_DATA
 from .esxi import esx_connect, esx_disconnect
@@ -103,8 +104,9 @@ class ESXiPowerPolicySelect(SelectEntity):
             "manufacturer": "VMware ESXi",
             "model": "ESXi Host",
             "sw_version": host_data.get("version", "Unknown"),
-            "connections": {("mac", mac.lower()) for mac in host_macs},
-            "mac": {("mac", mac.lower()) for mac in host_macs},
+            #"connections": {("mac", mac.lower()) for mac in host_macs},
+            #"mac": {("mac", mac.lower()) for mac in host_macs},
+            "connections": {(dr.CONNECTION_NETWORK_MAC, mac.lower()) for mac in host_macs},
         }
 
     @property
